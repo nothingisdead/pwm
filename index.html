@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>PWM</title>
+	</head>
+	<body>
+		<script src="https://unpkg.com/browserfs"></script>
+		<script src="https://unpkg.com/isomorphic-git"></script>
+		<script>
+			{
+				// Promisify
+				const p = (f) => {
+					return (...args) => {
+						return new Promise((resolve, reject) => {
+							f(...args, (error, result) => error ? reject(error) : resolve(result));
+						});
+					};
+				};
+
+				(async () => {
+					let storage;
+
+					try {
+						storage = await p(BrowserFS.FileSystem.IndexedDB.Create)();
+					}
+					catch(e) {
+						storage = await p(BrowserFS.FileSystem.LocalStorage.Create)();
+					}
+
+					BrowserFS.initialize(storage);
+
+					const fs  = BrowserFS.BFSRequire('fs');
+					const dir = './pwm';
+
+					const settings = Object.assign({ fs, dir }, {
+						url          : prompt('Repository URL'),
+						authUsername : prompt('Username'),
+						authPassword : prompt('Password'),
+					});
+
+					await git.clone(settings);
+
+					console.log('checked out');
+				})();
+			}
+		</script>
+	</body>
+</html>
