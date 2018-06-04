@@ -103,11 +103,23 @@ const login = async () => {
 };
 
 (async () => {
-	const pwm = await login();
+	const pwm    = await login();
+	const search = document.querySelector('.search');
+	const input  = search.querySelector('[name="tags"]');
+
+	search.classList.remove('hidden');
+
+	input.addEventListener('input', async () => {
+		if(input.value.length) {
+			const tags = input.value.split(/\s+/);
+
+			console.log(await pwm.getSecrets(tags));
+		}
+	});
 
 	// await pwm.setPassword('https://cloud.digitalocean.com/', 'un1', 'pw1');
 	// await pwm.setPassword('https://cloud.digitalocean.com/networking/domains', 'un2', 'pw2');
 
-	console.log(await pwm.getPassword('https://cloud.digitalocean.com/'));
-	console.log(await pwm.getPassword('https://cloud.digitalocean.com/', 'un2'));
+	// console.log(await pwm.getPassword('https://cloud.digitalocean.com/'));
+	// console.log(await pwm.getPassword('https://cloud.digitalocean.com/', 'un2'));
 })();
