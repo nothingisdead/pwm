@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>PWM</title>
+		<style type="text/css">
+			body {
+				margin           : 0;
+				padding          : 0;
+				background-color : #fff;
+				color            : #333;
+				font-family      : Arial, sans;
+			}
+
+			.hidden {
+				display : none !important;
+			}
+
+			.container {
+				background-color : #fff;
+				width            : 60vw;
+				min-height       : 100vh;
+				margin           : 0 auto;
+			}
+
+			.container input {
+				font-size     : 3em;
+				margin        : 0.25em;
+				padding       : 0.25em;
+				border        : 1px solid rgba(0, 0, 0, 0.25);
+				border-radius : 0.15em;
+			}
+
+			.container button {
+				font-size        : 2em;
+				margin           : 0.25em;
+				padding          : 0.25em;
+				background-color : #2b59c3;
+				color            : #fff;
+				border-radius    : 0.15em;
+			}
+
+			.container p {
+				text-align : center;
+			}
+
+			.container .header {
+				font-weight : bold;
+				font-size   : 2em;
+			}
+
+			.login {
+				display   : flex;
+				flex-flow : column;
+				width     : 60vw;
+				margin    : 0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="login hidden">
+				<p class="header">PWM: A simple password manager using gists</p>
+				<form class="login-form">
+					<input type="text" name="username" placeholder="Username">
+					<input type="password" name="password" placeholder="Password/Token">
+					<button type="submit">Setup</button>
+				</form>
+				<p>
+					<strong>Note</strong>: Your username and password are used to create and edit a single gist via the Github API.<br>
+					I <em>strongly recommend</em> you set up a <a target="_blank" href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/">Personal Access Token</a> that only has access to gists!
+				</p>
+			</div>
+		</div>
+		<script src="./index.js"></script>
+	</body>
+</html>
