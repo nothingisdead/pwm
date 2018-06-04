@@ -105,6 +105,10 @@ export default class PWM {
 		const box     = bs58.decode(box_bs58);
 		const message = nacl.secretbox.open(box, nonce, key);
 
+		if(message === null) {
+			return null;
+		}
+
 		return Buffer.from(message).toString('utf8');
 	}
 

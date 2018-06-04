@@ -13,6 +13,9 @@ if(!key || key.length !== KEY_LENGTH) {
 	key = PWM.createKey(KEY_LENGTH);
 }
 
+// If a new key was generated, set the location hash
+document.location.hash = bs58.encode(key);
+
 const login = async () => {
 	let un     = null;
 	let pw     = null;
@@ -33,6 +36,13 @@ const login = async () => {
 		const tmp = await new Promise((resolve, reject) => {
 			const container = document.querySelector('.login');
 			const form      = container.querySelector('.login-form');
+			const username  = form.querySelector('[name="username"]');
+			const github    = document.location.hostname.match(/^(.+)\.github\.io$/);
+
+			// Auto-fill Github username when loading from *.github.io
+			if(github) {
+				username.value = github[1];
+			}
 
 			// Show the login screen
 			container.classList.remove('hidden');
@@ -88,9 +98,6 @@ const login = async () => {
 		// Otherwise throw the error
 		throw e;
 	}
-
-	// If a new key was generated, set the location hash
-	document.location.hash = instance.key;
 
 	return instance;
 };
