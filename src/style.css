@@ -1,0 +1,116 @@
+body {
+	margin           : 0;
+	padding          : 0;
+	background-color : #fff;
+	color            : #333;
+	font-family      : 'Open Sans', sans-serif;
+}
+
+body input,
+body button {
+	font-family : 'Open Sans', sans-serif;
+}
+
+.hidden {
+	display : none !important;
+}
+
+.container {
+	margin           : 0 auto;
+	display          : flex;
+	flex-flow        : column;
+	background-color : #fff;
+	width            : 60vw;
+	min-height       : 100vh;
+}
+
+.container input {
+	font-size     : 3em;
+	margin        : 0.25em;
+	padding       : 0.25em;
+	border        : 1px solid #1dbbbb;
+}
+
+.container button {
+	cursor           : pointer;
+	font-size        : 3em;
+	margin           : 0.25em;
+	padding          : 0.25em;
+	background-color : #00b8b8;
+	color            : #fff;
+	border           : 1px solid #1dbbbb;
+}
+
+.container button:hover {
+	background-color: #42c4c4;
+}
+
+.container button.green {
+	background-color : #00dc00;
+	border-color     : #22dd22;
+}
+
+.container button.green:hover {
+	background-color : #4ce24c;
+}
+
+.container p {
+	text-align : center;
+}
+
+.container .header {
+	font-size     : 3em;
+	margin-top    : 1rem;
+	margin-bottom : 1rem;
+}
+
+.container .sub-header {
+	margin-top    : -1rem;
+	margin-bottom : 1rem;
+	font-size     : 0.75em;
+	color         : #444;
+}
+
+.login-form {
+	display   : flex;
+	flex-flow : column;
+	width     : 60vw;
+	margin    : 0 auto;
+}
+
+.loader {
+	position : fixed;
+	top      : 0;
+	left     : 0;
+	width    : 100vw;
+	height   : 0.5em;
+}
+
+.loader .progress-bar {
+	position         : absolute;
+	top              : 0;
+	left             : 0;
+	bottom           : 0;
+	right            : 0;
+	background-color : #79a6b3;
+	opacity          : 1;
+	transition       : opacity 0.5s, width 0.1s;
+}
+
+.loader .progress-bar.complete {
+	opacity : 0;
+}
+
+.search-form {
+	display : flex;
+}
+
+.search-form input {
+	min-width : 0;
+	flex      : 1 1 auto;
+}
+
+.search-form.note-mode .site-mode-only,
+.search-form.site-mode .note-mode-only {
+	display : none;
+}

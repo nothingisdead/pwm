@@ -11,9 +11,9 @@ const api      = 'https://api.github.com';
 const defaults = {};
 
 export default class PWM {
-	constructor(un, pw, key) {
+	constructor(username, password, key) {
 		// Store the credentials
-		this[_s] = { un, pw, key };
+		this[_s] = { username, password, key };
 
 		// Initialize gist and settings
 		const init = (async () => {
@@ -128,9 +128,9 @@ export default class PWM {
 
 	// Hash some data
 	hash(data) {
-		const { un, key } = this[_s];
+		const { username, key } = this[_s];
 
-		const message = JSON.stringify([ un, key, data ]);
+		const message = JSON.stringify([ username, key, data ]);
 		const buffer  = Buffer.from(message);
 
 		return bs58.encode(nacl.hash(buffer));
@@ -138,10 +138,10 @@ export default class PWM {
 
 	// Fetch a Github API url
 	async fetch(path, options = {}) {
-		const { un, pw } = this[_s];
+		const { username, password } = this[_s];
 
 		options.headers = Object.assign(options.headers || {}, {
-			'authorization' : `Basic ${btoa(`${un}:${pw}`)}`
+			'authorization' : `Basic ${btoa(`${username}:${password}`)}`
 		});
 
 		const response = await fetch(`${api}${path}`, options);

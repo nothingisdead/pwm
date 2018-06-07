@@ -1,4 +1,6 @@
 import PWM from './PWM';
+import Progress from './Progress';
+import Search from './Search';
 import bs58 from 'bs58';
 
 const KEY_LENGTH = 32;
@@ -15,6 +17,32 @@ if(!key || key.length !== KEY_LENGTH) {
 
 // If a new key was generated, set the location hash
 document.location.hash = bs58.encode(key);
+
+// Get elements
+const container    = document.querySelector('.login');
+const login_form   = container.querySelector('.login-form');
+const username     = login_form.querySelector('[name="username"]');
+const search_form  = document.querySelector('.search-form');
+const progress_bar = document.querySelector('.progress-bar');
+
+// AJAX progress bar
+const progress = new Progress(progress_bar);
+
+// Override the global fetch function
+const f = global.fetch;
+
+global.fetch = async (...args) => {
+	let p = 0;
+
+	const task = progress.task(10);
+	const i    = setInterval(() => task(p < 9 ? ++p : 9), 1);
+	const r    = await f(...args);
+
+	task();
+	clearInterval(i);
+
+	return r;
+};
 
 const login = async () => {
 	let un     = null;
@@ -34,10 +62,7 @@ const login = async () => {
 		stored = false;
 
 		const tmp = await new Promise((resolve, reject) => {
-			const container = document.querySelector('.login');
-			const form      = container.querySelector('.login-form');
-			const username  = form.querySelector('[name="username"]');
-			const github    = document.location.hostname.match(/^(.+)\.github\.io$/);
+			const github = document.location.hostname.match(/^(.+)\.github\.io$/);
 
 			// Auto-fill Github username when loading from *.github.io
 			if(github) {
@@ -49,10 +74,10 @@ const login = async () => {
 
 			const handleLogin = (e) => {
 				e.preventDefault();
-				form.removeEventListener('submit', handleLogin);
+				login_form.removeEventListener('submit', handleLogin);
 
 				// Get the username and password
-				const data = new FormData(form);
+				const data = new FormData(login_form);
 				const un   = data.get('username');
 				const pw   = data.get('password');
 
@@ -62,7 +87,7 @@ const login = async () => {
 				resolve({ un, pw });
 			};
 
-			form.addEventListener('submit', handleLogin);
+			login_form.addEventListener('submit', handleLogin);
 		});
 
 		un = tmp.un;
@@ -104,18 +129,7 @@ const login = async () => {
 
 (async () => {
 	const pwm    = await login();
-	const search = document.querySelector('.search');
-	const input  = search.querySelector('[name="tags"]');
-
-	search.classList.remove('hidden');
-
-	input.addEventListener('input', async () => {
-		if(input.value.length) {
-			const tags = input.value.split(/\s+/);
-
-			console.log(await pwm.getSecrets(tags));
-		}
-	});
+	const search = new Search(search_form, pwm);
 
 	// await pwm.setPassword('https://cloud.digitalocean.com/', 'un1', 'pw1');
 	// await pwm.setPassword('https://cloud.digitalocean.com/networking/domains', 'un2', 'pw2');

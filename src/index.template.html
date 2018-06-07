@@ -3,69 +3,30 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>PWM</title>
-		<style type="text/css">
-			body {
-				margin           : 0;
-				padding          : 0;
-				background-color : #fff;
-				color            : #333;
-				font-family      : Arial, sans;
-			}
-
-			.hidden {
-				display : none !important;
-			}
-
-			.container {
-				background-color : #fff;
-				width            : 60vw;
-				min-height       : 100vh;
-				margin           : 0 auto;
-			}
-
-			.container input {
-				font-size     : 3em;
-				margin        : 0.25em;
-				padding       : 0.25em;
-				border        : 1px solid rgba(0, 0, 0, 0.25);
-				border-radius : 0.15em;
-			}
-
-			.container button {
-				font-size        : 2em;
-				margin           : 0.25em;
-				padding          : 0.25em;
-				background-color : #2b59c3;
-				color            : #fff;
-				border-radius    : 0.15em;
-			}
-
-			.container p {
-				text-align : center;
-			}
-
-			.container .header {
-				font-weight : bold;
-				font-size   : 2em;
-			}
-
-			.login-form {
-				display   : flex;
-				flex-flow : column;
-				width     : 60vw;
-				margin    : 0 auto;
-			}
-		</style>
+		<link rel="stylesheet" href="font.css">
+		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
+		<div class="loader">
+			<div class="progress-bar"></div>
+		</div>
 		<div class="container">
-			<div class="search hidden">
-				<form class="search-form">
-					<input type="text" name="tags" placeholder="Enter Tags">
-				</form>
-			</div>
+			<form class="search-form hidden note-mode">
+				<button type="button" class="site-mode-button note-mode-only" title="Switch to website mode">
+					<span class="icon-link"></span>
+				</button>
+				<button type="button" class="note-mode-button site-mode-only" title="Switch to secure note mode">
+					<span class="icon-edit"></span>
+				</button>
+				<input type="text" name="tags" class="note-mode-only" placeholder="Enter Tags">
+				<input type="text" name="site" class="site-mode-only" placeholder="example.com user123">
+				<button type="submit" class="green add-button" title="Create a new entry">
+					<span class="icon-plus"></span>
+				</button>
+			</form>
 			<div class="login hidden">
-				<p class="header">PWM: A simple password manager using gists</p>
+				<p class="header">PWM</p>
+				<p class="sub-header">A simple password manager using gists</p>
 				<form class="login-form">
 					<input type="text" name="username" placeholder="Username">
 					<input type="password" name="password" placeholder="Password/Token">
