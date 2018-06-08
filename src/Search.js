@@ -1,7 +1,7 @@
 const SECURE_NOTE_PREFIX = '__';
 
 export default class Search {
-	constructor(form, pwm) {
+	constructor(form, results, pwm) {
 		const add = form.querySelector('.add-button');
 
 		// Handle updating the search results
@@ -24,7 +24,7 @@ export default class Search {
 			.addEventListener('click', () => this.noteMode());
 
 		// Store local properties
-		Object.assign(this, { form, pwm });
+		Object.assign(this, { form, results, pwm });
 
 		// Show the search form
 		form.classList.remove('hidden');
@@ -64,33 +64,64 @@ export default class Search {
 
 	// Update the search results
 	async update() {
-		const { form, pwm } = this;
+		const { form, results, pwm } = this;
 
 		const tags      = this.tags;
 		const site_mode = form.classList.contains('site-mode');
 
-		let results = [];
+		let items = [];
 
 		if(tags.length) {
 			if(site_mode) {
 				const url      = tags[0];
 				const username = tags[1];
 
-				// TODO: more forgiving URL parsing
-
-				results = await pwm.getPassword(url, username);
+				items = await pwm.getPasswords(url, username) || [];
 			}
 			else {
 				// All secure notes are prefixed with the same tag
 				tags.unshift(SECURE_NOTE_PREFIX);
 
-				results = await pwm.getSecrets(tags);
+				items = await pwm.getSecrets(tags) || [];
 			}
 		}
 
-		console.log(results);
+		if(items.length) {
+			results.innerHTML = items.map(({ secret, tags }, i) => `
+				<li class="search-result" data-result="${i}">
+					<span class="result-tags" title="Click to copy ${site_mode ? 'password' : 'secure note'}">
+						${site_mode ? `
+							${tags[1]}@${tags[0]}
+						` : `
+							${tags.join(' ')}
+						`}
+					</span>
+					<button class="icon-eye view-button" title="Click to view ${site_mode ? 'password' : 'secure note'}"></button>
+					<input type="text" class="result-secret invisible">
+				</li>
+			`).join('');
 
-		// TODO: render the results
+			items.forEach(({ secret }, i) => {
+				const item  = results.querySelector(`[data-result="${i}"]`);
+				const input = item.querySelector('.result-secret');
+				const view  = item.querySelector('.view-button');
+				const tags  = item.querySelector('.result-tags');
+
+				tags.addEventListener('click', () => {
+					input.select();
+					document.execCommand('copy');
+				});
+
+				view.addEventListener('click', () => alert(`${site_mode ? 'Password:' : 'Secure Note:'}\n\n${input.value}`));
+
+				input.value = secret;
+			});
+
+			results.classList.remove('hidden');
+		}
+		else {
+			results.classList.add('hidden');
+		}
 	}
 
 	// Disable inputs

@@ -1,4 +1,5 @@
 import nacl from 'tweetnacl';
+import normalizeUrl from 'normalize-url';
 import bs58 from 'bs58';
 
 const TEST_STRING     = 'PWM';
@@ -186,6 +187,8 @@ export default class PWM {
 
 	// Set a password for a URL + username
 	async setPassword(url, username, password) {
+		url = normalizeUrl(url);
+
 		const {
 			hostname,
 			pathname,
@@ -208,7 +211,9 @@ export default class PWM {
 	}
 
 	// Get a password for a URL + username
-	async getPassword(url, username) {
+	async getPasswords(url, username = '') {
+		url = normalizeUrl(url);
+
 		const {
 			hostname,
 			pathname,
@@ -218,7 +223,7 @@ export default class PWM {
 			href,
 		} = new URL(url);
 
-		const secrets = await this.getSecrets([
+		return await this.getSecrets([
 			// Limit by hostname
 			hostname,
 			// Username is more important than other tags
@@ -231,8 +236,6 @@ export default class PWM {
 			search,
 			href,
 		]);
-
-		return (secrets && secrets.length) ? secrets[0] : null;
 	}
 
 	// Set a secret for a set of tags
@@ -287,12 +290,13 @@ export default class PWM {
 
 		// Sort the secrets by number of tag matches
 		const secrets = Object.values(tmp)
-			.map(([ secret, tmp_tags ]) => [
-				secret,
-				tags.filter((t) => tmp_tags.includes(t)).length,
-			])
-			.sort(([ sa, ta ], [ sb, tb ]) => tb - ta)
-			.map(([ s, t ]) => s);
+			.map(([ secret, tmp_tags ]) => {
+				return Object.assign({ secret }, {
+					tags    : tmp_tags,
+					matches : tags.filter((t) => tmp_tags.includes(t)).length,
+				});
+			})
+			.sort(({ matches : a }, { matches : b }) => b - a);
 
 		return secrets;
 	}

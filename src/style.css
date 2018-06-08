@@ -11,8 +11,19 @@ body button {
 	font-family : 'Open Sans', sans-serif;
 }
 
-.hidden {
-	display : none !important;
+.hidden.hidden.hidden {
+	display : none;
+}
+
+.invisible.invisible.invisible {
+	position   : absolute;
+	top        : -1000px;
+	left       : -1000px;
+	height     : 0;
+	width      : 0;
+	margin     : 0;
+	padding    : 0;
+	border     : none;
 }
 
 .container {
@@ -26,7 +37,7 @@ body button {
 
 .container input {
 	font-size     : 3em;
-	margin        : 0.25em;
+	margin        : 0.5rem;
 	padding       : 0.25em;
 	border        : 1px solid #1dbbbb;
 }
@@ -34,14 +45,14 @@ body button {
 .container button {
 	cursor           : pointer;
 	font-size        : 3em;
-	margin           : 0.25em;
+	margin           : 0.5rem;
 	padding          : 0.25em;
 	background-color : #00b8b8;
 	color            : #fff;
 	border           : 1px solid #1dbbbb;
 }
 
-.container button:hover {
+.container.container.container button:hover {
 	background-color: #42c4c4;
 }
 
@@ -50,7 +61,7 @@ body button {
 	border-color     : #22dd22;
 }
 
-.container button.green:hover {
+.container.container.container button.green:hover {
 	background-color : #4ce24c;
 }
 
@@ -113,4 +124,41 @@ body button {
 .search-form.note-mode .site-mode-only,
 .search-form.site-mode .note-mode-only {
 	display : none;
+}
+
+.search-results {
+	list-style : none;
+	margin     : 0;
+	padding    : 0.5rem;
+}
+
+.search-results .search-result {
+	display   : flex;
+	flex-flow : row nowrap;
+	cursor    : pointer;
+}
+
+.search-results .search-result .result-tags {
+	background-color : #ff8927;
+	padding          : 0.5em;
+	font-size        : 2em;
+	flex             : 1 0 auto;
+}
+
+.search-results .search-result:nth-child(2n) .result-tags {
+	background-color : #ff7400;
+}
+
+.search-results .search-result .result-tags:hover {
+	background-color : #ffa356;
+}
+
+.search-results .search-result .view-button {
+	margin           : 0;
+	background-color : #1dbbbb;
+	border           : none;
+}
+
+.search-results .search-result:nth-child(2n) .view-button {
+	background-color : #00b8b8;
 }

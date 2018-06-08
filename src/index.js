@@ -19,11 +19,12 @@ if(!key || key.length !== KEY_LENGTH) {
 document.location.hash = bs58.encode(key);
 
 // Get elements
-const container    = document.querySelector('.login');
-const login_form   = container.querySelector('.login-form');
-const username     = login_form.querySelector('[name="username"]');
-const search_form  = document.querySelector('.search-form');
-const progress_bar = document.querySelector('.progress-bar');
+const container      = document.querySelector('.login');
+const login_form     = container.querySelector('.login-form');
+const username       = login_form.querySelector('[name="username"]');
+const search_form    = document.querySelector('.search-form');
+const search_results = document.querySelector('.search-results');
+const progress_bar   = document.querySelector('.progress-bar');
 
 // AJAX progress bar
 const progress = new Progress(progress_bar);
@@ -129,7 +130,7 @@ const login = async () => {
 
 (async () => {
 	const pwm    = await login();
-	const search = new Search(search_form, pwm);
+	const search = new Search(search_form, search_results, pwm);
 
 	// await pwm.setPassword('https://cloud.digitalocean.com/', 'un1', 'pw1');
 	// await pwm.setPassword('https://cloud.digitalocean.com/networking/domains', 'un2', 'pw2');
